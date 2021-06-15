@@ -1,19 +1,21 @@
 <?= $this->extend('layout/template'); ?>
-<?php $koneksi = mysqli_connect("localhost", "root", "", "inagata"); ?>
-<?php $query = mysqli_query($koneksi, "SELECT * FROM berita"); ?>
 <?= $this->section('content'); ?>
 
 <div class="container">
     <div class="row">
         <div class="col">
-            <table class="table table-dark table-striped">
-                <?= $i = 1; ?>
-                <?php while ($berita = mysqli_fetch_assoc($query)) : ?>
+            <a href="/pages/create" class="btn btn-primary">tambah berita</a>
+            <table class="table table table-striped">
+                <?php $i = 1 ?>
+                <?php foreach ($berita as $k) : ?>
                     <tr>
-                        <td> <?php echo $berita["isi_berita"]; ?> </td>
+                        <td><?= $i ?></td>
+                        <td><?= $k['judul_berita']; ?> </td>
+                        <td><?= $k['isi_berita']; ?> </td>
+                        <td> <a href="/pages/detail/<?= $k['id_berita'] ?> " class="btn btn-primary">detail</a> </td>
                     </tr>
-                    <?= $i++; ?>
-                <?php endwhile; ?>
+                    <?php $i++; ?>
+                <?php endforeach ?>
             </table>
         </div>
     </div>
