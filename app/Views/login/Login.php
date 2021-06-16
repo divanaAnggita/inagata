@@ -5,6 +5,9 @@
 <div class="container">
     <div class="row">
         <div class="col">
+            <?php if (session()->getFlashdata('error')) : ?>
+                <div class="alert alert-danger"><?= session()->getFlashdata('error'); ?></div>
+            <?php endif; ?>
             <form action="/Auth/loginHandler" method="post">
                 <br /> <br />
                 <div class="mb-3 row">

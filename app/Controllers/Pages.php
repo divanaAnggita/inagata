@@ -6,10 +6,16 @@ use App\Models\Beritamodels;
 
 class Pages extends BaseController
 {
+	// protected $session;
 	protected $BeritaModels;
 	public function __construct()
 	{
+		// $this->session = session();
 		$this->BeritaModels = new BeritaModels();
+		// if (!$this->session->get('id_user')) {
+		// 	header('Location: /Auth/login');
+		// }
+		// $this->is_session_available();
 	}
 
 	public function index()
@@ -138,4 +144,10 @@ class Pages extends BaseController
 		session()->setFlashdata('pesan', 'Data anda berhasil ditambahkan.');
 		return redirect()->to('/pages');
 	}
+	// private function is_session_available()
+	// {
+	// 	if (!session()->get('id_user')) {
+	// 		return redirect()->to('/dashboard');
+	// 	}
+	// }
 }
