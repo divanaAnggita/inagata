@@ -47,7 +47,7 @@ class Pages extends BaseController
 
 	public function create()
 	{
-		session();
+		// session();
 		$data = [
 			'title' => 'Create Berita',
 			'validation' => \config\Services::validation()
@@ -60,7 +60,13 @@ class Pages extends BaseController
 	{
 		// validasi inputan
 		if (!$this->validate([
-			'judul_berita' => 'required|is_unique[berita.judul_berita]',
+			'judul_berita' => [
+				'rules' => 'required|is_unique[berita.judul_berita]',
+				'errors' => [
+					'required' => '{field} judul berita harus di isi.',
+					'is_unique' => '{field} judul berita sudah terdafatar.'
+				]
+			],
 			'isi_berita' => 'required'
 		])) {
 			$validation = \config\Services::validation();
@@ -73,6 +79,63 @@ class Pages extends BaseController
 			'isi_berita' => $this->request->getVar('isi_berita')
 		]);
 
+		session()->setFlashdata('pesan', 'Data anda berhasil ditambahkan.');
+		return redirect()->to('/pages');
+	}
+
+	public function delete($id_berita)
+	{
+		$this->BeritaModels->delete($id_berita);
+
+		session()->setFlashdata('pesan', 'Data anda berhasil dihapus.');
+		return redirect()->to('/pages');
+	}
+
+	public function edit($id_berita)
+	{
+		$data = [
+			'title' => 'Edit Berita',
+			'validation' => \config\Services::validation(),
+			'berita' => $this->BeritaModels->getberita($id_berita)
+		];
+
+		return view('pages/edit', $data);
+	}
+
+	public function update($id_berita)
+	{
+		//cek data berita lana
+		$beritaLama = $this->BeritaModels->getberita($id_berita);
+		// dd($beritaLama);
+		if ($beritaLama['judul_berita'] == $this->request->getVar('judul_berita')) {
+			$rule_judul = 'required';
+		} else {
+			$rule_judul = 'required|is_unique[berita.judul_berita]';
+		}
+
+		// validasi update
+		if (!$this->validate([
+			'judul_berita' => [
+				'rules' => $rule_judul,
+				'errors' => [
+					'required' => '{field} judul berita harus di isi.',
+					'is_unique' => '{field} judul berita sudah terdafatar.'
+				],
+				'isi_berita' => 'required'
+			]
+		])) {
+			$validation = \config\Services::validation();
+			// dd($validation);
+			return redirect()->to('/pages/edit/' . $id_berita)->withInput()->with('validation', $validation);
+		}
+		// dd($this->request->getVar());
+		$this->BeritaModels->save([
+			'id_berita' => $id_berita,
+			'judul_berita' => $this->request->getVar('judul_berita'),
+			'isi_berita' => $this->request->getVar('isi_berita')
+		]);
+
+		session()->setFlashdata('pesan', 'Data anda berhasil ditambahkan.');
 		return redirect()->to('/pages');
 	}
 }

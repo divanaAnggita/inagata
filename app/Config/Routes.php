@@ -34,7 +34,10 @@ $routes->setAutoRoute(true);
 // $routes->get('/', 'Home::index');
 $routes->get('/', 'Pages::index');
 
-$routes->get('/pages/detail/(:segment)', 'Pages::detail/$1');
+$routes->get('/Auth', 'Auth::index');
+$routes->delete('pages/(:num)', 'Pages::delete/$1');
+$routes->get('/pages/detail/(:any)', 'Pages::detail/$1');
+$routes->get('/pages/edit/(:segment)', 'Pages::edit/$1');
 
 /*
  * --------------------------------------------------------------------
