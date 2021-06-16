@@ -9,7 +9,7 @@ class AuthModels extends Model
     protected $table = 'user';
     protected $primaryKey = 'id_user';
     protected $userTimestamps = true;
-    protected $allowedFields = ['nama_user', 'email', 'password', 'id_jenis'];
+    protected $allowedFields = ['nama_user', 'email', 'password'];
 
     public function getUser($id_user = false)
     {
